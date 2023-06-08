@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital@1&display=swap');
+
+.navbar {
+    display: flex;
+    background-color: rgba(17, 24, 39, 0.589);
+}
+
+.logo {
+    display: flex;
+    color: black;
+    font-weight: bold;
+    font-size: 24px;
+    font-family: Merriweather, serif;
+    text-align: left;
+    padding: 8px 5px;
+}
