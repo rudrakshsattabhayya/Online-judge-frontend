@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { post } from "../apis";
-import { STATUS } from "./statuses";
+import STATUS from "../statuses";
 
-export const authThunk = createAsyncThunk(
-  "authSlice/authThunk",
+export const googleLoginThunk = createAsyncThunk(
+  "loginSlice/googleLoginThunk",
   async (jwtToken) => {
     try {
       const data = {
@@ -23,28 +23,14 @@ export const authThunk = createAsyncThunk(
   }
 );
 
-// export const logoutThunk = createAsyncThunk(
-//   "authSlice/logoutThunk",
-//   async () => {
-//     try {
-//       return deleteApi("logout").then((res) => {
-//         const obj = {
-//           data: res.data,
-//           error: res.error,
-//         };
-//         return obj;
-//       });
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   }
-// ); 
-
 export const authRouteThunk = createAsyncThunk(
-  "authSlice/authRouteThunk",
+  "loginSlice/authRouteThunk",
   async () => {
       try{
-        return post("auth-route",{}).then((res) => {
+        const obj = {
+          token: localStorage.getItem("token")
+        };
+        return post("auth-route", obj).then((res) => {
           const obj = {
             data: res.data,
             error: res.error,
@@ -57,65 +43,73 @@ export const authRouteThunk = createAsyncThunk(
   }
 )
 
-const authSlice = createSlice({
-  name: "authSlice",
+const loginSlice = createSlice({
+  name: "loginSlice",
   initialState: {
     status: STATUS.IDLE,
+    newLoginStatus: false,
     data: {
       name: null,
       email: null,
       profilePic: null,
+      token: null,
     },
-    authenticatedStatus: STATUS.IDLE,
+    isAuthenticated: STATUS.LOADING,
     errorMsg: null,
-    snackBarStatus: false,
   },
   reducers: {
-    closeSnackBar: (state, action) => {
-        state.snackBarStatus = false;
+    removeErrorStatus: (state, action) => {
+      state.status = STATUS.IDLE;
+    },
+    removeNewLoginStatus: (state, action) => {
+      state.newLoginStatus = false;
     }
   },
   extraReducers: {
-    [authRouteThunk.pending]: (state, action) => {
-      state.authenticatedStatus = STATUS.LOADING;
-    },
-    [authRouteThunk.fulfilled]: (state, action) => {
-      const { error, data } = action.payload;
-      if (error) {
-        state.errorMsg = data;
-        state.authenticatedStatus = false;
-      } else {
-        if(data === "User is Authenticated!"){
-          state.authenticatedStatus = true;
-        }else{
-          state.authenticatedStatus = false;
-        }
-      }
-    },
-    [authThunk.pending]: (state, action) => {
+    [googleLoginThunk.pending]: (state, action) => {
       state.status = STATUS.LOADING;
     },
-    [authThunk.fulfilled]: (state, action) => {
+    [googleLoginThunk.fulfilled]: (state, action) => {
       const { error, data } = action.payload;
       if (error) {
-        if(data === "User is not registerd!"){
-          state.errorMsg = "It seems that you are not registered to this portal. Please contact the Admin!";
-          state.snackBarStatus = true;
-        }
+        state.errorMsg = data.message;
         state.status = STATUS.ERROR;
       } else {
         state.data.email = data.email;
         state.data.name = data.name;
         state.data.profilePic = data.profilePic;
+        state.newLoginStatus = true;
+        localStorage.setItem('token',data.jwtToken)
         localStorage.setItem('email', data.email);
         localStorage.setItem('name', data.name);
         localStorage.setItem('profilePic', data.profilePic);
-        state.status = STATUS.SUCCESS;
+        state.status = STATUS.IDLE;
+        state.isAuthenticated = true
       }
     },
-    [authThunk.rejected]: (state, action) => {},
+    [googleLoginThunk.rejected]: (state, action) => {},
+
+
+    [authRouteThunk.pending]: (state, action) => {
+      state.isAuthenticated = STATUS.LOADING;
+    },
+    [authRouteThunk.fulfilled]: (state, action) => {
+      const { error, data } = action.payload;
+      if (error) {
+        state.errorMsg = data.message;
+        state.status = STATUS.ERROR;
+        state.isAuthenticated = false;
+      } else {
+        if(data.status === 200){
+          state.isAuthenticated = true;
+        }else{
+          state.isAuthenticated = false;
+        } 
+      }
+    },
+    [authRouteThunk.rejected]: (state, action) => {},
   },
 });
 
-export default authSlice.reducer;
-export const {closeSnackBar} = authSlice.actions;
+export const { removeErrorStatus, removeNewLoginStatus } = loginSlice.actions;
+export default loginSlice.reducer;

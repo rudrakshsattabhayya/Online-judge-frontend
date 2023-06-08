@@ -14,6 +14,10 @@ const get = async (route) => {
       ...res,
       error: false,
     };
+
+    if(res.data.status !==200){
+      response.error = true;
+    }
     
     return response;
   } catch (error) {
@@ -41,6 +45,10 @@ const post = async (route, obj) => {
       ...res,
       error: false,
     };
+
+    if(res.data.status !==200){
+      response.error = true;
+    }
     return response;
   } catch (error) {
     console.log(error);
