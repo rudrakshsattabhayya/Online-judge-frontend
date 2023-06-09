@@ -3,7 +3,10 @@ import { useSelector, useDispatch } from "react-redux";
 import {removeNewLoginStatus,removeErrorStatus} from "../../redux/loginPageSlice";
 import {problemTableThunk, filterTagsThunk, leaderBoardThunk, removeErrorStatusForDashboard} from "../../redux/dashboardSlice";
 import { openSnackBar } from "../../redux/snackBarSlice";
+import { removeErrorStatusForProblemPage } from "../../redux/problemPageSlice";
+import { removeErrorStatusForAdminAuth } from "../../redux/adminAuth";
 import STATUS from "../../statuses";
+import Loader from "../../Components/Loader/loader";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -11,7 +14,12 @@ const Dashboard = () => {
     (status) => status.login
   );
   const dashboardStatus = useSelector((status) => status.dashboardState.status);
-  const dashboardErrorMsg = useSelector((status) => status.dashboardState.errorMsg)
+  const dashboardErrorMsg = useSelector((status) => status.dashboardState.errorMsg);
+  const problemPageStatus = useSelector((status) => status.problemPageState.status);
+  const problemPageErrorMsg = useSelector((status) => status.problemPageState.errorMsg);
+  const adminAuthStatus = useSelector((status) => status.adminAuthState.status);
+  const adminAuthErrorMsg = useSelector((status) => status.adminAuthState.errorMsg);
+
   useEffect(() => {
     if (newLoginStatus) {
       const payload = {
@@ -35,6 +43,17 @@ const Dashboard = () => {
   }, [status]);
 
   useEffect(() => {
+    if (problemPageStatus === STATUS.ERROR) {
+      const payload = {
+        message: problemPageErrorMsg,
+        type: "error",
+      };
+      dispatch(openSnackBar(payload));
+      dispatch(removeErrorStatusForProblemPage());
+    }
+  }, [problemPageStatus]);
+
+  useEffect(() => {
     if (dashboardStatus === STATUS.ERROR) {
       const payload = {
         message: dashboardErrorMsg,
@@ -45,6 +64,17 @@ const Dashboard = () => {
     }
   }, [dashboardStatus]);
 
+  useEffect(() => {
+    if (adminAuthStatus === STATUS.ERROR) {
+      const payload = {
+        message: adminAuthErrorMsg,
+        type: "warning",
+      };
+      dispatch(openSnackBar(payload));
+      dispatch(removeErrorStatusForAdminAuth());
+    }
+  }, [adminAuthStatus]);
+
   useEffect(() =>{
     dispatch(filterTagsThunk());
     dispatch(leaderBoardThunk());
@@ -52,7 +82,14 @@ const Dashboard = () => {
   }, []);
 
   
-  return <>Dashboard</>;
+  return (<>
+  {dashboardStatus !== STATUS.IDLE?<Loader />:
+  <div>
+    <div>Dashboard</div>
+  </div>
+
+  }
+  </>);
 };
 
 export default Dashboard;

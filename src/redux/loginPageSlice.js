@@ -23,6 +23,23 @@ export const googleLoginThunk = createAsyncThunk(
   }
 );
 
+export const signInWithPasswordThunk = createAsyncThunk(
+  "loginSlice/signInWithPasswordThunk",
+  async (data) => {
+    try {
+      return post("login-with-password", data).then((res) => {
+        const obj = {
+          data: res.data,
+          error: res.error,
+        };
+        return obj;
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
 export const authRouteThunk = createAsyncThunk(
   "loginSlice/authRouteThunk",
   async () => {
@@ -88,6 +105,30 @@ const loginSlice = createSlice({
       }
     },
     [googleLoginThunk.rejected]: (state, action) => {},
+
+
+    [signInWithPasswordThunk.pending]: (state, action) => {
+      state.status = STATUS.LOADING;
+    },
+    [signInWithPasswordThunk.fulfilled]: (state, action) => {
+      const { error, data } = action.payload;
+      if (error) {
+        state.errorMsg = data.message;
+        state.status = STATUS.ERROR;
+      } else {
+        state.data.email = data.email;
+        state.data.name = data.name;
+        state.data.profilePic = data.profilePic;
+        state.newLoginStatus = true;
+        localStorage.setItem('token',data.jwtToken)
+        localStorage.setItem('email', data.email);
+        localStorage.setItem('name', data.name);
+        localStorage.setItem('profilePic', data.profilePic);
+        state.status = STATUS.IDLE;
+        state.isAuthenticated = true
+      }
+    },
+    [signInWithPasswordThunk.rejected]: (state, action) => {},
 
 
     [authRouteThunk.pending]: (state, action) => {

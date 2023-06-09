@@ -1,23 +1,43 @@
 import "./signInBox.css";
+import {useState} from "react";
+import { useDispatch } from "react-redux";
+import {signInWithPasswordThunk} from "../../../redux/loginPageSlice";
 
 const SignInBox = () => {
+  const dispatch = useDispatch();
+  const [email, updateEmail] = useState("");
+  const [password, updatePassword] = useState("");
+
+  const handleEmailChange = (event) => {
+    updateEmail(event.target.value)
+  }
+  const handlePasswordChange = (event) => {
+    updatePassword(event.target.value)
+  }
+  const handleSubmit = () => {
+    const data = {
+      email: email,
+      password: password
+    }
+    dispatch(signInWithPasswordThunk(data));
+  }
   return (
     <div className="form-container">
       <p className="title">Login</p>
-      <form className="form" style={{ paddingRight: "48px" }}>
+      <div className="form" style={{ paddingRight: "48px" }}>
         <div style={{ opacity: "1" }} className="input-group">
           <label htmlFor="username">Email</label>
-          <input type="text" name="username" id="username" placeholder="" />
+          <input type="text" name="username" id="username" value={email} onChange={handleEmailChange} placeholder="" />
         </div>
         <div className="input-group" style={{ opacity: "1" }}>
           <label htmlFor="password">Password</label>
-          <input type="password" name="password" id="password" placeholder="" />
-          <div className="forgot">Forgot Password ?</div>
+          <input type="password" name="password" id="password" value={password} onChange={handlePasswordChange} placeholder="" />
+          <div className="forgot" style={{cursor: "pointer" }}>Forgot Password ?</div>
         </div>
-        <button className="sign" style={{ opacity: "1", marginLeft: "27px" }}>
+        <button className="sign" style={{ opacity: "1", marginLeft: "27px", cursor: "pointer" }} onClick={handleSubmit}>
           Sign in
         </button>
-      </form>
+      </div>
       <div className="social-message">
         <div className="line"></div>
         <p className="message">Login with Google</p>

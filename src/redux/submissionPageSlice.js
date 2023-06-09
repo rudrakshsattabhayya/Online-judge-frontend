@@ -34,6 +34,25 @@ const submissionPageSlice = createSlice({
     removeErrorStatusForSubmissionPage: (state, action) => {
         state.status = STATUS.IDLE;
       },
+    deleteSelectedSubmissionsReducer: (state, action) => {
+      let submissions = [...state.data];
+      let submissionsToBeDeleted = action.payload;
+
+      submissionsToBeDeleted.forEach((submissionId) => {
+        let index = -1;
+        submissions.forEach((elem, i) => {
+          if(elem.id == submissionId){
+            index = i;
+          }
+        });
+
+        if (index > -1) {
+          submissions.splice(index, 1);
+        }
+      });
+
+      state.data = submissions;
+    },
   },
   extraReducers: {
     
@@ -55,5 +74,5 @@ const submissionPageSlice = createSlice({
       
 });
 
-export const { removeErrorStatusForSubmissionPage } = submissionPageSlice.actions;
+export const { removeErrorStatusForSubmissionPage, deleteSelectedSubmissionsReducer } = submissionPageSlice.actions;
 export default submissionPageSlice.reducer;
