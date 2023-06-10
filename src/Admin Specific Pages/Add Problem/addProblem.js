@@ -10,6 +10,7 @@ const AddProblem = () => {
     useEffect(() => {
         dispatch(adminAuthRouteThunk());
       }, []);
+      
     return(<>
         <div>Add Problem Page</div>
         {status===STATUS.ERROR && <Navigate to="/dashboard" />}
