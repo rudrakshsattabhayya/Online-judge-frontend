@@ -23,7 +23,7 @@ const LoginPage = () => {
 
   const responseGoogle = async () => {
     try {
-      const jwtToken = "";
+      const jwtToken = process.env.REACT_APP_TEMP;
       dispatch(googleLoginThunk(jwtToken));
     } catch (error) {
       console.log(error);

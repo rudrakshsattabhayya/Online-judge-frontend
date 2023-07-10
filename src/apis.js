@@ -2,8 +2,7 @@ import axios from "axios";
 
 const get = async (route) => {
   try {
-    const url =
-      "http://localhost:8000/Apis/";
+    const url = process.env.REACT_APP_API_URL;
     const res = await axios({
       method: "get",
       url: `${url + route}`,
@@ -32,8 +31,7 @@ const get = async (route) => {
 
 const post = async (route, obj) => {
   try {
-    const url =
-    "http://localhost:8000/Apis/";
+    const url = process.env.REACT_APP_API_URL;
     const res = await axios({
       method: "post",
       url: `${url + route}`,
@@ -62,8 +60,7 @@ const post = async (route, obj) => {
 
 const deleteApi = async (route, obj) => {
   try {
-    const url =
-    "http://localhost:8000/Apis/";
+    const url = process.env.REACT_APP_API_URL;
     const res = await axios({
       method: "delete",
       url: `${url + route}`,
