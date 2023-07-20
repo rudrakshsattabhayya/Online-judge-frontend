@@ -5,7 +5,6 @@ import { googleLoginThunk, removeErrorStatus } from "../../redux/loginPageSlice"
 import { openSnackBar } from "../../redux/snackBarSlice";
 import STATUS from "../../statuses";
 
-
 const LoginPage = () => {
   const dispatch = useDispatch();
   const { status, errorMsg } = useSelector((status) => status.login);
@@ -21,9 +20,9 @@ const LoginPage = () => {
     }
   }, [status])
 
-  const responseGoogle = async () => {
+  const responseGoogle = async (res) => {
     try {
-      const jwtToken = process.env.REACT_APP_TEMP;
+      const jwtToken = res.credential;
       dispatch(googleLoginThunk(jwtToken));
     } catch (error) {
       console.log(error);
@@ -40,7 +39,7 @@ const LoginPage = () => {
       }}
     >
     <button onClick={responseGoogle}>sign-In</button>
-      <SignInBox />
+      <SignInBox responseGoogle={responseGoogle} />
     </div>
   );
 };

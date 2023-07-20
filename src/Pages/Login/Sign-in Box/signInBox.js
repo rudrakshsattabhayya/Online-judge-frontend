@@ -1,58 +1,83 @@
 import "./signInBox.css";
-import {useState} from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
-import {signInWithPasswordThunk} from "../../../redux/loginPageSlice";
+import { signInWithPasswordThunk } from "../../../redux/loginPageSlice";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 
-const SignInBox = () => {
+const SignInBox = ({ responseGoogle }) => {
   const dispatch = useDispatch();
   const [email, updateEmail] = useState("");
   const [password, updatePassword] = useState("");
 
   const handleEmailChange = (event) => {
-    updateEmail(event.target.value)
-  }
+    updateEmail(event.target.value);
+  };
   const handlePasswordChange = (event) => {
-    updatePassword(event.target.value)
-  }
+    updatePassword(event.target.value);
+  };
   const handleSubmit = () => {
     const data = {
       email: email,
-      password: password
-    }
+      password: password,
+    };
     dispatch(signInWithPasswordThunk(data));
-  }
+  };
+  console.log(process.env.REACT_APP_CLIENT_ID)
   return (
     <div className="form-container">
       <p className="title">Login</p>
-      <div className="form" style={{ paddingRight: "48px" }}>
+      <form className="form" style={{ paddingRight: "48px" }}>
         <div style={{ opacity: "1" }} className="input-group">
           <label htmlFor="username">Email</label>
-          <input type="text" name="username" id="username" value={email} onChange={handleEmailChange} placeholder="" />
+          <input
+            type="text"
+            name="username"
+            id="username"
+            value={email}
+            onChange={handleEmailChange}
+            placeholder=""
+            required
+          />
         </div>
         <div className="input-group" style={{ opacity: "1" }}>
           <label htmlFor="password">Password</label>
-          <input type="password" name="password" id="password" value={password} onChange={handlePasswordChange} placeholder="" />
-          <div className="forgot" style={{cursor: "pointer" }}>Forgot Password ?</div>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            value={password}
+            onChange={handlePasswordChange}
+            required
+            placeholder=""
+          />
+          <div className="forgot" style={{ cursor: "pointer" }}>
+            Forgot Password ?
+          </div>
         </div>
-        <button className="sign" style={{ opacity: "1", marginLeft: "27px", cursor: "pointer" }} onClick={handleSubmit}>
+        <button
+          className="sign"
+          style={{ opacity: "1", marginLeft: "27px", cursor: "pointer" }}
+          onClick={handleSubmit}
+          type="submit"
+        >
           Sign in
         </button>
-      </div>
+      </form>
       <div className="social-message">
         <div className="line"></div>
         <p className="message">Login with Google</p>
         <div className="line"></div>
       </div>
       <div className="social-icons">
-        <button aria-label="Log in with Google" className="icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 32 32"
-            className="w-5 h-5 fill-current"
-          >
-            <path d="M16.318 13.714v5.484h9.078c-0.37 2.354-2.745 6.901-9.078 6.901-5.458 0-9.917-4.521-9.917-10.099s4.458-10.099 9.917-10.099c3.109 0 5.193 1.318 6.38 2.464l4.339-4.182c-2.786-2.599-6.396-4.182-10.719-4.182-8.844 0-16 7.151-16 16s7.156 16 16 16c9.234 0 15.365-6.49 15.365-15.635 0-1.052-0.115-1.854-0.255-2.651z"></path>
-          </svg>
-        </button>
+        <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID}>
+          <GoogleLogin
+            aria-label="Log in with Google"
+            className="icon"
+            onSuccess={responseGoogle}
+            onFailure={responseGoogle}
+            cookiePolicy="single_host_origin"
+          ></GoogleLogin>
+        </GoogleOAuthProvider>
       </div>
     </div>
   );

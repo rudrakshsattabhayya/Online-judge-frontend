@@ -124,6 +124,7 @@
   border: none;
   background-color: transparent;
   margin-left: 8px;
+  cursor: pointer;
 }
 
 .social-icons .icon svg {
