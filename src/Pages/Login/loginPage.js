@@ -38,7 +38,6 @@ const LoginPage = () => {
         alignItems: "center",
       }}
     >
-    <button onClick={responseGoogle}>sign-In</button>
       <SignInBox responseGoogle={responseGoogle} />
     </div>
   );

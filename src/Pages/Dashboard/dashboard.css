@@ -1,0 +1,12 @@
+#dashboardContent{
+    display: flex;
+    justify-content: space-between;
+}
+
+.dashboardContentItem{
+    flex: 1;
+}
+
+.dashboardContentTable{
+    flex-basis: 45%;
+}

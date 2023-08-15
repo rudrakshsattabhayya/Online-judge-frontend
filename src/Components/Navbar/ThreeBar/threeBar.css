@@ -12,7 +12,7 @@
     -webkit-user-select: none;
     -webkit-box-flex: 0;
     flex: 0 0 auto;
-    color: rgba(255, 255, 255, .87);
+    color: rgb(255, 255, 255);
 }
 
 .gb_Kc:hover {
@@ -30,5 +30,5 @@
     -webkit-box-flex: 0;
     flex: 0 0 auto;
     outline: none;
-    background-color: rgba(6, 4, 48, 0.1);
+    background-color: rgba(255, 255, 255, 0.1);
 }

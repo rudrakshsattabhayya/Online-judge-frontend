@@ -1,3 +1,4 @@
+import "./dashboard.css";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {removeNewLoginStatus,removeErrorStatus} from "../../redux/loginPageSlice";
@@ -7,6 +8,8 @@ import { removeErrorStatusForProblemPage } from "../../redux/problemPageSlice";
 import { removeErrorStatusForAdminAuth } from "../../redux/adminAuth";
 import STATUS from "../../statuses";
 import Loader from "../../Components/Loader/loader";
+import Table from "../../Components/Table/table";
+import Sidebar from "./Sidebar/sidebar";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -84,10 +87,12 @@ const Dashboard = () => {
   
   return (<>
   {dashboardStatus !== STATUS.IDLE?<Loader />:
-  <div>
-    <div>Dashboard</div>
+  <div id="dashboardContainer">
+  <div id="dashboardContent">
+    <Table className="dashboardContentItem dashboardContentTable" tableHeading="Problems" />
+    <Sidebar className="dashboardContentItem"/>
   </div>
-
+  </div>
   }
   </>);
 };

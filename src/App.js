@@ -18,6 +18,7 @@ import STATUS from "./statuses";
 import SnackbarComponent from "./Components/Snackbar/snackBar";
 import AdminDashboard from "./Admin Specific Pages/Dashboard/adminDashboard";
 import AddProblem from "./Admin Specific Pages/Add Problem/addProblem";
+import {gapi} from 'gapi-script';
 
 function App() {
   const dispatch = useDispatch();
