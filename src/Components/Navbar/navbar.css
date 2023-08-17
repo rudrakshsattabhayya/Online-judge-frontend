@@ -2,7 +2,9 @@
 
 .navbar {
     display: flex;
-    background-color: rgba(17, 24, 39, 0.589);
+    background-color: #080c1c;
+    padding: 5px 0;
+    padding-left: 10px;
 }
 
 .logo {

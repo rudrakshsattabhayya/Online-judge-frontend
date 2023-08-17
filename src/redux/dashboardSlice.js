@@ -69,12 +69,25 @@ const dashboardSlice = createSlice({
         status: STATUS.IDLE,
         data: []
     },
+    filterValues: {
+      tags: [],
+      difficulty: 0
+    },
     errorMsg: null,
   },
   reducers: {
     removeErrorStatusForDashboard: (state, action) => {
         state.status = STATUS.IDLE;
-      },
+    },
+    updateFilterValues: (state, action) => {
+      if(action.payload.difficulty){
+        state.filterValues.difficulty = action.payload.difficulty;
+      }
+
+      if(action.payload.tags){
+        state.filterValues.tags = action.payload.tags;
+      }
+    }
   },
   extraReducers: {
     [problemTableThunk.pending]: (state, action) => {
@@ -127,5 +140,5 @@ const dashboardSlice = createSlice({
   },
 });
 
-export const { removeErrorStatusForDashboard } = dashboardSlice.actions;
+export const { removeErrorStatusForDashboard, updateFilterValues } = dashboardSlice.actions;
 export default dashboardSlice.reducer;

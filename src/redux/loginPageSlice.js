@@ -70,6 +70,7 @@ const loginSlice = createSlice({
       email: null,
       profilePic: null,
       token: null,
+      username: null,
     },
     isAuthenticated: STATUS.LOADING,
     errorMsg: null,
@@ -80,6 +81,10 @@ const loginSlice = createSlice({
     },
     removeNewLoginStatus: (state, action) => {
       state.newLoginStatus = false;
+    },
+    changeUsernameReducer: (state, action) => {
+      state.data.username = action.payload;
+      console.log("cru")
     }
   },
   extraReducers: {
@@ -143,6 +148,10 @@ const loginSlice = createSlice({
       } else {
         if(data.status === 200){
           state.isAuthenticated = true;
+          state.data.name = data.name;
+          state.data.email = data.email;
+          state.data.username = data.username;
+          state.data.profilePic = data.profilePic;
         }else{
           state.isAuthenticated = false;
         } 
@@ -152,5 +161,5 @@ const loginSlice = createSlice({
   },
 });
 
-export const { removeErrorStatus, removeNewLoginStatus } = loginSlice.actions;
+export const { removeErrorStatus, removeNewLoginStatus, changeUsernameReducer } = loginSlice.actions;
 export default loginSlice.reducer;

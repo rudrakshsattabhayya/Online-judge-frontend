@@ -1,14 +1,15 @@
-import ThreeBar from "./ThreeBar/threeBar";
 import "./navbar.css";
 import Profile from "./ProfileSection/profile";
-
+import { useNavigate } from "react-router";
 
 export default function Navbar() {
-
+  const navigate = useNavigate();
+  const handleLogoClick = () => {
+    navigate("/dashboard");
+  }
   return (
     <div className="navbar">
-      {<ThreeBar />}
-      <div className="logo">{"</> OnlineJudge"}</div>
+      <div className="logo" style={{cursor: "pointer"}} onClick={handleLogoClick}>{"</> OnlineJudge"}</div>
       <Profile />
     </div>
   );

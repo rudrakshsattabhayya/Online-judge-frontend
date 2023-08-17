@@ -1,85 +1,76 @@
+import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import "./table.css";
+import Pagination from "@mui/material/Pagination";
 
-const Table = ({className, tableHeading}) => {
-    return (
-        <div id="tableContainer" className={className}>
-            <div className="container" style={{paddingTop: "100px", paddingBottom: "100px"}}>
+const Table = ({ className, tableHeading, trInfo, headingRowInfo }) => {
+  const navigate = useNavigate();
+  const perPageCount = 10;
+  const [currentPage, setCurrentPage] = useState(1);
 
-<div>
-  <div>
-    <div className="table-card">
-      <div className="header">
-        <span className="title">{tableHeading}</span>
-      </div>
+  const handlePaginationChange = (event, page) => {
+    setCurrentPage(page);
+  }
+
+  const handleClick = (event) => {
+    if(event.target.id){
+      navigate(`/problem/${event.target.id}`);
+    }
+  }
+  
+  return (
+    <div id="tableContainer" className={className}>
       <div className="table">
-        <table className="bordered">
-          <thead>
-            <tr>
-              <th>Transação</th>
-              <th>Host</th>
-              <th>Erro</th>
-              <th>#</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td>POST /fwlink/?LinkID=109572&clcid=0x409</td>
-              <td>go.microsoft.com</td>
-              <td>400</td>
-              <td>10</td>
-            </tr>
-
-            <tr>
-              <td>GET /chrome/profile_avatars/NothingToDownload</td>
-              <td>www.gstatic.com</td>
-              <td>404</td>
-              <td>1</td>
-            </tr>
-
-            <tr>
-              <td>GET /chrome/profile_avatars/NothingToDownload</td>
-              <td>www.gstatic.com</td>
-              <td>404</td>
-              <td>1</td>
-            </tr>
-
-            <tr>
-              <td>GET /chrome/profile_avatars/NothingToDownload</td>
-              <td>www.gstatic.com</td>
-              <td>404</td>
-              <td>1</td>
-            </tr>
-
-            <tr>
-              <td>GET /chrome/profile_avatars/NothingToDownload</td>
-              <td>www.gstatic.com</td>
-              <td>404</td>
-              <td>1</td>
-            </tr>
-
-            <tr>
-              <td>GET /chrome/profile_avatars/NothingToDownload</td>
-              <td>www.gstatic.com</td>
-              <td>404</td>
-              <td>1</td>
-            </tr>
-
-          </tbody>
-        </table>
-      </div>
-
-      <div className="footer">
-        Footer
-      </div>
-
-    </div>
-  </div>
-</div>
-
-</div>
+        <div className="thead">
+          <div className="tr">
+            {headingRowInfo.map((col) => {
+              return (
+                <div
+                  className="th"
+                  key={col.id}
+                  style={{ flexBasis: col.width }}
+                >
+                  {col.title}
+                </div>
+              );
+            })}
+          </div>
         </div>
-    )
-}
+        <div className="tbody">
+          {trInfo.map((row, index) => {
+            if(row.index>perPageCount*(currentPage-1) && row.index <= perPageCount*currentPage)
+            return (
+              <div className="tr problemRow" id={row.problemId} key={index} onClick={handleClick}>
+                {headingRowInfo.map((col) => {
+                  return (
+                    <div
+                      className="td"
+                      key={col.id}
+                      style={{ flexBasis: col.width }}
+                      id={row.problemId}
+                    >
+                      {col.tdKeyName !== "code"?row[col.tdKeyName]:(<a href={row.code}>Code</a>)}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
+        </div>
+        <div className="tfoot">
+          <div className="tr" style={{ justifyContent: "center" }}>
+            <Pagination
+              className="pagination"
+              count={parseInt((trInfo.length - 1) / perPageCount + 1)}
+              shape="rounded"
+              page={currentPage}
+              onChange={handlePaginationChange}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default Table;

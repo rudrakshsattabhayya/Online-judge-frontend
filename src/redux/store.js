@@ -6,6 +6,7 @@ import submissionReducer from "./submissionPageSlice";
 import problemPageReducer from "./problemPageSlice";
 import adminAuthReducer from "./adminAuth";
 import adminDashboardReducer from "./adminDashboardSlice";
+import navbarReducer from "./navbar";
 
 export const store = configureStore({
   reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
     problemPageState: problemPageReducer,
     adminAuthState: adminAuthReducer,
     adminDashboardState: adminDashboardReducer,
+    navbar: navbarReducer
   },
 });

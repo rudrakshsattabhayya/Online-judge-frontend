@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import {
   BrowserRouter as Router,
@@ -18,7 +18,6 @@ import STATUS from "./statuses";
 import SnackbarComponent from "./Components/Snackbar/snackBar";
 import AdminDashboard from "./Admin Specific Pages/Dashboard/adminDashboard";
 import AddProblem from "./Admin Specific Pages/Add Problem/addProblem";
-import {gapi} from 'gapi-script';
 
 function App() {
   const dispatch = useDispatch();
@@ -29,21 +28,54 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <Navbar />
-      </header>
-      {isAuthenticated === STATUS.LOADING? <Loader />:
+      {isAuthenticated === STATUS.LOADING ? (
+        <Loader />
+      ) : (
         <Router>
+          <header className="App-header">
+            <Navbar />
+          </header>
           <Routes>
-            <Route element={!isAuthenticated?<LoginPage />:<Navigate to="/dashboard" />} path="/" exact />
-            <Route element={isAuthenticated?<Dashboard />:<Navigate to="/" />} path="/dashboard" exact />
-            <Route element={isAuthenticated?<SubmissionPage />:<Navigate to="/" />} path="/submissions" exact />
-            <Route element={isAuthenticated?<ProblemPage />:<Navigate to="/" />} path="/problem/:problemId" exact />
-            <Route element={isAuthenticated?<AdminDashboard />:<Navigate to="/" />} path="/admin/dashboard" exact />
-            <Route element={isAuthenticated?<AddProblem />:<Navigate to="/" />} path="/admin/create-problem" exact />            
+            <Route
+              element={
+                !isAuthenticated ? <LoginPage /> : <Navigate to="/dashboard" />
+              }
+              path="/"
+              exact
+            />
+            <Route
+              element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />}
+              path="/dashboard"
+              exact
+            />
+            <Route
+              element={
+                isAuthenticated ? <SubmissionPage /> : <Navigate to="/" />
+              }
+              path="/submissions"
+              exact
+            />
+            <Route
+              element={isAuthenticated ? <ProblemPage /> : <Navigate to="/" />}
+              path="/problem/:problemId"
+              exact
+            />
+            <Route
+              element={
+                isAuthenticated ? <AdminDashboard /> : <Navigate to="/" />
+              }
+              path="/admin/dashboard"
+              exact
+            />
+            <Route
+              element={isAuthenticated ? <AddProblem /> : <Navigate to="/" />}
+              path="/admin/create-problem"
+              exact
+            />
           </Routes>
-        </Router>}
-        <SnackbarComponent />
+        </Router>
+      )}
+      <SnackbarComponent />
     </div>
   );
 }

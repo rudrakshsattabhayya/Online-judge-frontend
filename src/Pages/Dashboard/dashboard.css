@@ -1,12 +1,27 @@
-#dashboardContent{
+#dashboardContent {
     display: flex;
     justify-content: space-between;
 }
 
-.dashboardContentItem{
+.dashboardContentItem {
     flex: 1;
 }
 
-.dashboardContentTable{
+.dashboardContentTable {
     flex-basis: 45%;
+}
+
+#dasboardHeading {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: xx-large;
+    font-weight: bold;
+    margin: 30px 0;
+}
+
+#dashboardMenuIcon {
+    vertical-align: auto;
+    position: absolute;
+    left: 15px;
+    padding-top: 7px;
+    cursor: pointer;
 }
