@@ -25,7 +25,7 @@ const SignInBox = ({ responseGoogle }) => {
   return (
     <div className="form-container">
       <p className="title">Login</p>
-      <form className="form" style={{ paddingRight: "48px" }}>
+      <div className="form" style={{ paddingRight: "48px" }}>
         <div style={{ opacity: "1" }} className="input-group">
           <label htmlFor="username">Email</label>
           <input
@@ -61,7 +61,7 @@ const SignInBox = ({ responseGoogle }) => {
         >
           Sign in
         </button>
-      </form>
+      </div>
       <div className="social-message">
         <div className="line"></div>
         <p className="message">Login with Google</p>

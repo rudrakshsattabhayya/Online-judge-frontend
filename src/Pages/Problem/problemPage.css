@@ -1,0 +1,84 @@
+#problemsPageContent{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 100px;
+}
+
+@media (max-width: 900px) {
+    #problemsPageContent{
+        flex-direction: column;
+    }
+}
+
+.problemsPageContentItem {
+    flex: 1;
+}
+
+#problemsPageInfo {
+    flex-basis: 45%;
+    padding: 0 30px;
+}
+
+#problemsPageInfoHeading{
+    padding: 0 5px 25px 5px;
+}
+
+#problemsPageInfoInputs {
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.1);
+    transition: 0.4s;
+    font-family: 'lato', sans-serif;
+}
+
+.problemsPageInfoInputsTitle {
+    text-align: center;
+    font-weight: bold;
+    font-size: 25px;
+    background-color: #010820dd;
+    color: white;
+    border-radius: 5px 5px 0 0;
+}
+
+.problemsPageInfoInputsTitle p {
+    text-align: left;
+    padding: 5px 10px;
+    margin: 0;
+}
+
+.problemsPageInfoInputsContent{
+    background-color: #d8d9da3b;
+}
+
+.problemsPageInfoInputs{
+    padding: 10px;
+}
+
+#problemsPageInfoInputs {
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.1);
+    transition: 0.4s;
+    font-family: 'lato', sans-serif;
+}
+
+.problemsPageInfoOutputsTitle {
+    text-align: center;
+    font-weight: bold;
+    font-size: 25px;
+    background-color: #010820dd;
+    color: white;
+    border-radius: 5px 5px 0 0;
+}
+
+.problemsPageInfoOutputsTitle p {
+    text-align: left;
+    padding: 5px 10px;
+    margin: 0;
+}
+
+.problemsPageInfoOutputsContent{
+    background-color: #d8d9da3b;
+}
+
+.problemsPageInfoOutputs{
+    padding: 10px;
+}

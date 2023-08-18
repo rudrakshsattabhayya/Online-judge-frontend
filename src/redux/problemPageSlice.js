@@ -11,13 +11,27 @@ export const problemThunk = createAsyncThunk(
           questionId: problemId
         };
   
-        return post("show-problem", data).then((res) => {
+        return post("show-problem", data).then(async (res) => {
           const obj = {
             data: res.data,
             error: res.error,
           };
+          if(!res.error){
+            let link = res.data.response.problemsData.problemStatement;
+            const problemStatementLink = process.env.REACT_APP_SUBMISSION_FILE_URL +  link;
+            await fetch(problemStatementLink)
+            .then(response => response.text())
+            .then(textContent => {
+              const formattedTextContent = textContent.replace(/\n/g, '<br>');
+              res.data.response.problemsData.problemStatement = formattedTextContent;
+            })
+            .catch(error => {
+            console.error('Error fetching the text file:', error);
+            });
+          }
           return obj;
         });
+
       } catch (err) {
         console.log(err);
       }
@@ -70,6 +84,7 @@ const problemPageSlice = createSlice({
     submitSolutionStatus: STATUS.IDLE,
     submissionMessage: null,
     data: null,
+    problemsData: null,
     errorMsg: null,
     solution: null,
   },
@@ -77,6 +92,12 @@ const problemPageSlice = createSlice({
     removeErrorStatusForProblemPage: (state, action) => {
         state.status = STATUS.IDLE;
       },
+    removeSuccessStatusFromSubmission: (status, action) => {
+        status.submitSolutionStatus = STATUS.IDLE
+    },
+    setSolutionNull: (status, action) => {
+        status.solution = null;
+    }
   },
   extraReducers: {
     
@@ -90,6 +111,28 @@ const problemPageSlice = createSlice({
           state.status = STATUS.ERROR;
         } else {
           state.data = data.response;
+          state.problemsData = data.response.problemsData
+          let problem = data.response.problemsData;
+          if(problem.difficulty === 1){
+            state.problemsData.difficulty = "Easy"
+          }else if (problem.difficulty === 2){
+            state.problemsData.difficulty = "Medium"
+          }else {
+            state.problemsData.difficulty = "Hard"
+          }
+
+          if (problem.totalSubmissions === 0){
+            state.problemsData.successRate = "0%";
+          }else{
+            let rate = parseInt(100*(problem.acceptedSubmissions/problem.totalSubmissions));
+            state.problemsData.successRate = `${rate}%`;
+          }
+          
+          let formattedTextContent = problem.visibleTestCases.replace(/\n/g, '<br>');
+          state.problemsData.visibleTestCases = formattedTextContent;
+          formattedTextContent = problem.visibleOutputs.replace(/\n/g, '<br>');
+          state.problemsData.visibleOutputs = formattedTextContent;
+          
           state.status = STATUS.IDLE;
         }
       },
@@ -120,7 +163,7 @@ const problemPageSlice = createSlice({
           state.submitSolutionStatus = STATUS.ERROR;
         } else {
           state.submissionMessage = data.verdict;
-          state.submitSolutionStatus = STATUS.IDLE;
+          state.submitSolutionStatus = STATUS.SUCCESS;
         }
       },
       [submitSolutionThunk.rejected]: (state, action) => {},
@@ -129,5 +172,5 @@ const problemPageSlice = createSlice({
       
 });
 
-export const { removeErrorStatusForProblemPage } = problemPageSlice.actions;
+export const { removeErrorStatusForProblemPage, removeSuccessStatusFromSubmission, setSolutionNull } = problemPageSlice.actions;
 export default problemPageSlice.reducer;
