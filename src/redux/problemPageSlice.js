@@ -28,6 +28,30 @@ export const problemThunk = createAsyncThunk(
             .catch(error => {
             console.error('Error fetching the text file:', error);
             });
+
+            link = res.data.response.problemsData.visibleTestCases;
+            const visibleTestCasestLink = process.env.REACT_APP_SUBMISSION_FILE_URL +  link;
+            await fetch(visibleTestCasestLink)
+            .then(response => response.text())
+            .then(textContent => {
+              const formattedTextContent = textContent.replace(/\n/g, '<br>');
+              res.data.response.problemsData.visibleTestCases = formattedTextContent;
+            })
+            .catch(error => {
+            console.error('Error fetching the text file:', error);
+            });
+
+            link = res.data.response.problemsData.visibleOutputs;
+            const visibleOutputstLink = process.env.REACT_APP_SUBMISSION_FILE_URL +  link;
+            await fetch(visibleOutputstLink)
+            .then(response => response.text())
+            .then(textContent => {
+              const formattedTextContent = textContent.replace(/\n/g, '<br>');
+              res.data.response.problemsData.visibleOutputs = formattedTextContent;
+            })
+            .catch(error => {
+            console.error('Error fetching the text file:', error);
+            });
           }
           return obj;
         });
@@ -127,11 +151,6 @@ const problemPageSlice = createSlice({
             let rate = parseInt(100*(problem.acceptedSubmissions/problem.totalSubmissions));
             state.problemsData.successRate = `${rate}%`;
           }
-          
-          let formattedTextContent = problem.visibleTestCases.replace(/\n/g, '<br>');
-          state.problemsData.visibleTestCases = formattedTextContent;
-          formattedTextContent = problem.visibleOutputs.replace(/\n/g, '<br>');
-          state.problemsData.visibleOutputs = formattedTextContent;
           
           state.status = STATUS.IDLE;
         }
