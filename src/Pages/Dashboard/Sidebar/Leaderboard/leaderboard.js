@@ -33,6 +33,27 @@ const Leaderboard = () => {
           <Loader />
         ) : (
           <>
+          <div className="leaderboardTr" id="0" key="0">
+                    <div className="leaderBoardTd" style={{ flexBasis: "20%" }}>
+                      <b>#</b>
+                    </div>
+                    <div
+                      className="leaderBoardTd"
+                      style={{
+                        flexBasis: "50%",
+                        textAlign: "left",
+                        padding: "0 5px",
+                      }}
+                    >
+                      <b>Username</b>
+                    </div>
+                    <div
+                      className="leaderBoardTd"
+                      style={{ flexBasis: "30%", padding: "0 5px" }}
+                    >
+                      <b>Score</b>
+                    </div>
+                  </div>
             {trInfo.map((row, index) => {
               if (
                 index + 1 > perPageCount * (currentPage - 1) &&
