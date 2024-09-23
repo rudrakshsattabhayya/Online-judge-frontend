@@ -72,9 +72,12 @@ const SubmissionPage = () => {
         let reverseData = [...data];
         reverseData.reverse()
         reverseData.forEach((submission, index) => {
-          let verdict = "False";
-          if(submission.verdict){
-            verdict = "True";
+          let verdict = submission.status;
+          if(submission.status === "Processed"){
+            verdict = "False";
+            if(submission.verdict) {
+              verdict = "True";
+            }
           }
           const obj = {
             index: index+1,

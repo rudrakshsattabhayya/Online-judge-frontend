@@ -31,10 +31,13 @@ const PreviousSubmssionsBox = () => {
                 index: index + 1,
                 ...sub
             }
-            if(obj.verdict){
+            obj.verdict = obj.status
+            if(obj.status === "Processed"){
+              if(obj.verdict){
                 obj.verdict = "True";
-            }else{
-                obj.verdict = "False";
+              }else{
+                  obj.verdict = "False";
+              }
             }
             const dateObj = new Date(obj.time);
             const formattedDate = dateObj.toLocaleDateString('en-IN', options);
