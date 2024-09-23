@@ -15,7 +15,7 @@ const LoginPage = () => {
         message: errorMsg,
         type: "error"
       };
-      dispatch(openSnackBar(payload));
+      // dispatch(openSnackBar(payload));
       dispatch(removeErrorStatus());
     }
   }, [status])
