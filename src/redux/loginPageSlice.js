@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { post } from "../apis";
 import STATUS from "../statuses";
+import axios from "axios";
 
 export const googleLoginThunk = createAsyncThunk(
   "loginSlice/googleLoginThunk",
@@ -100,8 +101,10 @@ const loginSlice = createSlice({
         state.data.email = data.email;
         state.data.name = data.name;
         state.data.profilePic = data.profilePic;
+        console.log(state.data.profilePic)
         state.newLoginStatus = true;
         localStorage.setItem('token',data.jwtToken)
+        axios.defaults.headers.common['Authorization'] = `Bearer ${data.jwtToken}`;
         localStorage.setItem('email', data.email);
         localStorage.setItem('name', data.name);
         localStorage.setItem('profilePic', data.profilePic);

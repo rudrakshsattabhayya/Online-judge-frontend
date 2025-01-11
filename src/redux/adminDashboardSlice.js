@@ -7,7 +7,6 @@ export const adminDashboardDeleteSubmissionsThunk = createAsyncThunk(
   async (submissionsToBeDeleted) => {
       try{
         const obj = {
-          jwtToken: localStorage.getItem("token"),
           submissionsToBeDeleted: submissionsToBeDeleted
         };
         return post("delete-submissions", obj).then((res) => {

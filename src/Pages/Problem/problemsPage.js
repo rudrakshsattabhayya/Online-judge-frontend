@@ -45,7 +45,7 @@ const ProblemPage = () => {
 
   useEffect(() => {
     if(solution != null){
-      const link = process.env.REACT_APP_SUBMISSION_FILE_URL +  solution;
+      const link = solution?.substring(0, 4) !== "http"? process.env.REACT_APP_SUBMISSION_FILE_URL +  solution : solution;
       dispatch(setSolutionNull());
       window.location.href = link;
     }

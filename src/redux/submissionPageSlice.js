@@ -7,7 +7,6 @@ export const submissionsThunk = createAsyncThunk(
     async () => {
       try {
         const data = {
-          jwtToken: localStorage.getItem("token"),
         };
   
         return post("list-submissions", data).then((res) => {

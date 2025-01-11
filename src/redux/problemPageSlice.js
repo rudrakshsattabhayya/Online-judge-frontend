@@ -7,7 +7,6 @@ export const problemThunk = createAsyncThunk(
     async (problemId) => {
       try {
         const data = {
-          jwtToken: localStorage.getItem("token"),
           questionId: problemId
         };
   
@@ -18,7 +17,7 @@ export const problemThunk = createAsyncThunk(
           };
           if(!res.error){
             let link = res.data.response.problemsData.problemStatement;
-            const problemStatementLink = process.env.REACT_APP_SUBMISSION_FILE_URL +  link;
+            const problemStatementLink = link?.substring(0, 4) !== "http"? process.env.REACT_APP_SUBMISSION_FILE_URL + link : link;
             await fetch(problemStatementLink)
             .then(response => response.text())
             .then(textContent => {
@@ -30,7 +29,7 @@ export const problemThunk = createAsyncThunk(
             });
 
             link = res.data.response.problemsData.visibleTestCases;
-            const visibleTestCasestLink = process.env.REACT_APP_SUBMISSION_FILE_URL +  link;
+            const visibleTestCasestLink = link?.substring(0, 4) !== "http"? process.env.REACT_APP_SUBMISSION_FILE_URL + link : link;
             await fetch(visibleTestCasestLink)
             .then(response => response.text())
             .then(textContent => {
@@ -42,7 +41,7 @@ export const problemThunk = createAsyncThunk(
             });
 
             link = res.data.response.problemsData.visibleOutputs;
-            const visibleOutputstLink = process.env.REACT_APP_SUBMISSION_FILE_URL +  link;
+            const visibleOutputstLink = link?.substring(0, 4) !== "http"? process.env.REACT_APP_SUBMISSION_FILE_URL + link : link;
             await fetch(visibleOutputstLink)
             .then(response => response.text())
             .then(textContent => {
@@ -67,7 +66,6 @@ export const showProblemSolutionThunk = createAsyncThunk(
     async (problemId) => {
       try {
         const data = {
-          jwtToken: localStorage.getItem("token"),
           questionId: problemId
         };
   
@@ -76,6 +74,7 @@ export const showProblemSolutionThunk = createAsyncThunk(
             data: res.data,
             error: res.error,
           };
+          console.log(res)
           return obj;
         });
       } catch (err) {
@@ -158,9 +157,11 @@ const problemPageSlice = createSlice({
       [problemThunk.rejected]: (state, action) => {},
 
       [showProblemSolutionThunk.pending]: (state, action) => {
+        console.log("Pending")
         state.status = STATUS.LOADING;
       },
       [showProblemSolutionThunk.fulfilled]: (state, action) => {
+        console.log("fulfilled: ", action.payload)
         const { error, data } = action.payload;
         if (error) {
           state.errorMsg = data.message;

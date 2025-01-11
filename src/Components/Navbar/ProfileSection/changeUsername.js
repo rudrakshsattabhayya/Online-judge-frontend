@@ -25,7 +25,6 @@ const ChangeUsername = ({ open, handleClose }) => {
       setTextFieldError(true);
     } else {
       const obj = {
-        jwtToken: localStorage.getItem("token"),
         newUserName: textFieldValue,
       };
       setTextFieldValue("");

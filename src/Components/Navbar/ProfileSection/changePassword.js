@@ -23,7 +23,6 @@ const ChangePassword = ({ open, handleClose }) => {
       setTextFieldError(true);
     } else {
       const obj = {
-        jwtToken: localStorage.getItem("token"),
         password: textFieldValue,
       };
       setTextFieldValue("");

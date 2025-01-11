@@ -1,12 +1,14 @@
 import axios from "axios";
 
+axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem("token")}`;
+
 const get = async (route) => {
   try {
     const url = process.env.REACT_APP_API_URL;
     const res = await axios({
       method: "get",
       url: `${url + route}`,
-      withCredentials: true,
+      // withCredentials: true,
     });
 
     const response = {
@@ -14,13 +16,17 @@ const get = async (route) => {
       error: false,
     };
 
-    if(res.data.status !==200){
+    if(res.status !==200){
       response.error = true;
     }
     
     return response;
   } catch (error) {
       console.log(error);
+      if(!error?.response?.data?.message){
+        error.response.data.message = error.message || "Something went wrong!";
+      }
+      
       const response = {
         data: error.response.data,
         error: true,
@@ -35,7 +41,7 @@ const post = async (route, obj) => {
     const res = await axios({
       method: "post",
       url: `${url + route}`,
-      withCredentials: true,
+      // withCredentials: true,
       data: obj,
     });
 
@@ -44,12 +50,16 @@ const post = async (route, obj) => {
       error: false,
     };
 
-    if(res.data.status !==200){
+    if(res.status !==200){
       response.error = true;
     }
     return response;
   } catch (error) {
     console.log(error);
+    if(!error?.response?.data?.message){
+      error.response.data.message = error.message || "Something went wrong!";
+    }
+
     const response = {
       data: error.response.data,
       error: true,
@@ -64,7 +74,7 @@ const deleteApi = async (route, obj) => {
     const res = await axios({
       method: "delete",
       url: `${url + route}`,
-      withCredentials: true,
+      // withCredentials: true,
     });
 
     const response = {
@@ -74,6 +84,9 @@ const deleteApi = async (route, obj) => {
     return response;
   } catch (error) {
     console.log(error);
+    if(!error?.response?.data?.message){
+      error.response.data.message = error.message || "Something went wrong!";
+    }
     const response = {
       data: error.response.data,
       error: true,

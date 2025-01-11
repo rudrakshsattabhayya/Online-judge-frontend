@@ -69,7 +69,7 @@ const SubmissionPage = () => {
 
       useEffect(() => {
         let arr = [];
-        let reverseData = [...data];
+        let reverseData = data? [...data] : [];
         reverseData.reverse()
         reverseData.forEach((submission, index) => {
           let verdict = submission.status;
@@ -84,7 +84,7 @@ const SubmissionPage = () => {
             problemId: submission.problem.id,
             problemTitle: submission.problem.title,
             user: submission.user,
-            code: process.env.REACT_APP_SUBMISSION_FILE_URL+submission.code,
+            code: submission.code?.substring(0, 4) !=="http"? process.env.REACT_APP_SUBMISSION_FILE_URL+submission.code: submission.code,
             time: convertDateFormat(submission.time),
             verdict: verdict
           }

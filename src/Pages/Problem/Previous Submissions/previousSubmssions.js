@@ -25,8 +25,9 @@ const PreviousSubmssionsBox = () => {
           minute: '2-digit',
           timeZone: 'Asia/Kolkata'
         };
-          
-        userSubmissions.forEach((sub, index) => {
+
+        if(userSubmissions){
+          userSubmissions.forEach((sub, index) => {
             const obj = {
                 index: index + 1,
                 ...sub
@@ -42,7 +43,7 @@ const PreviousSubmssionsBox = () => {
             const formattedDate = dateObj.toLocaleDateString('en-IN', options);
             obj.time = formattedDate;
             arr.push(obj);
-        });
+        });}
         updateTrInfo(arr);
     }
   }, [data]);
@@ -72,7 +73,7 @@ const PreviousSubmssionsBox = () => {
                       className="previousSubmissionsTd"
                       style={{ flexBasis: "60%", textAlign: "left", padding: "0 5px" }}
                     >
-                        <a href={process.env.REACT_APP_SUBMISSION_FILE_URL+row.code}>{row.time}</a> 
+                        <a href={row.code?.substring(0,4) !== "http"? process.env.REACT_APP_SUBMISSION_FILE_URL+row.code:row.code}>{row.time}</a> 
                     </div>
                     <div
                       className="previousSubmissionsTd"

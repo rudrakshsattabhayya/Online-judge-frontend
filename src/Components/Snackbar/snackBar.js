@@ -31,7 +31,7 @@ const SnackbarComponent = () => {
   return (
     <Snackbar open={visible} autoHideDuration={6000} onClose={handleClose}>
       <Alert onClose={handleClose} severity={type} sx={{ width: "100%" }}>
-        {message}
+        {message || "Something went wrong!"}
       </Alert>
     </Snackbar>
   );
