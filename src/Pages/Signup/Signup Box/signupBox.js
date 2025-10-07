@@ -1,9 +1,10 @@
-import "./signInBox.css";
+import "./signupBox.css";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { signInWithPasswordThunk } from "../../../redux/loginPageSlice";
 
-const SignInBox = () => {
+const SignUpBox = () => {
+  console.log("signup box");
   const dispatch = useDispatch();
   const [email, updateEmail] = useState("");
   const [username, updateUsername] = useState("");
@@ -102,4 +103,4 @@ const SignInBox = () => {
   );
 };
 
-export default SignInBox;
+export default SignUpBox;

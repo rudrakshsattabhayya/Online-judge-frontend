@@ -12,6 +12,7 @@ import Navbar from "./Components/Navbar/navbar";
 import Loader from "./Components/Loader/loader";
 import Dashboard from "./Pages/Dashboard/dashboard";
 import LoginPage from "./Pages/Login/loginPage";
+import SignupPage from "./Pages/Signup/signupPage";
 import SubmissionPage from "./Pages/Submissions/submissionsPage";
 import ProblemPage from "./Pages/Problem/problemsPage";
 import STATUS from "./statuses";
@@ -39,6 +40,13 @@ function App() {
             <Route
               element={
                 !isAuthenticated ? <LoginPage /> : <Navigate to="/dashboard" />
+              }
+              path="/"
+              exact
+            />
+            <Route
+              element={
+                <SignupPage />
               }
               path="/"
               exact
